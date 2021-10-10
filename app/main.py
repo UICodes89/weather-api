@@ -1,23 +1,14 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Depends, FastAPI
 
-from app.core.config import settings
+from .core.dependencies import get_query_token, get_token_header
+from .routers import weather
 
-app = FastAPI(dependencies=[Depends(get_query_token)])
-def get_application():
-    _app = FastAPI(title=settings.PROJECT_NAME)
-
-    _app.add_middleware(
-        CORSMiddleware,
-        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-    return _app
+app = FastAPI()
+app.include_router(weather.router)
 
 
-app = get_application()
-app.include_router(users.router)
-app.include_router(items.router)
+@app.get("/health")
+async def root():
+    return {
+        'code':200, 'status':'ok'
+    }
