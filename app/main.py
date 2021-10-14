@@ -55,4 +55,7 @@ if __name__ == "__main__":
     # Use this for debugging purposes only
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="debug")
+    # uvicorn.run(app=, host="0.0.0.0", port=8000, log_level="debug")
+    from pathlib import Path
+
+    uvicorn.run(f"{Path(__file__).stem}:app", host='0.0.0.0', port=8127, workers=2)
