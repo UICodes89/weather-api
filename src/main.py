@@ -4,7 +4,12 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from api.v1.endpoints import weather
 
+import sys
+import os
+sys.path.append(os.pardir)
+sys.path.append(os.path.join(os.pardir, os.pardir))
 
+import uvicorn
 async def request_validation_exception_handler(request: Request, exc: RequestValidationError):
     return PlainTextResponse(str(exc), status_code=400)
 
@@ -51,11 +56,7 @@ async def root():
     return {
         'code':200, 'status':'ok'
     }
-if __name__ == "__main__":
-    # Use this for debugging purposes only
-    import uvicorn
-
-    # uvicorn.run(app=, host="0.0.0.0", port=8000, log_level="debug")
-    from pathlib import Path
-
-    uvicorn.run(f"{Path(__file__).stem}:app", host='0.0.0.0', port=8127, workers=2)
+    
+if __name__ == '__main__':
+    uvicorn.run(app, host='127.0.0.1', port=8005)
+    print("running")
