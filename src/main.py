@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI, Request
 from fastapi.openapi.utils import get_openapi
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from api.v1.endpoints import weather
+from src.api.v1.endpoints import weather
 import uvicorn
 async def request_validation_exception_handler(request: Request, exc: RequestValidationError):
     return PlainTextResponse(str(exc), status_code=400)
