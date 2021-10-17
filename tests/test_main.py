@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient 
 from src.main import app
-app = FastAPI()
+
 client = TestClient(app)
 city = "cork"
 sucess_response = {
@@ -48,15 +48,16 @@ sucess_response = {
     "cod": 200
 }
 
-def test_read_root():
+def test_success_get_weather_by_city():
     response = client.get('/api/v1/weather/{0}'.format(city))
+    print(response)
     assert response.status_code == 200
     
-def test_read_root():
+def test_error405_get_weather_by_city():
     response = client.get('/api/v1/weather/{0}'.format(''))
     assert response.status_code == 405
 
-def test_read_root():
+def test_error400_get_weather_by_city():
     response = client.get('/api/v1/weather/{0}'.format('sdgsd'))
     assert response.status_code == 404
     
@@ -65,14 +66,14 @@ def test_read_root():
     
 #functional case for [/api/v1/weather/] body{latitude and longitude}
     
-def test_read_root():
+def test_success_get_weather_by_geo():
     response = client.post('/api/v1/weather/', headers={'Content-Type': 'application/json'}, json={"longitude": 53.3497645, "latitude": -6.2602732})
     assert response.status_code == 200
     
-def test_read_root():
+def test_error405_get_weather_by_geo():
     response = client.post('/api/v1/weather/', headers={'Content-Type': 'application/json'}, json={"longitude": '', "latitude": ''})
     assert response.status_code == 404
 
-def test_read_root():
+def test_error400_get_weather_by_geo():
     response = client.post('/api/v1/weather/', headers={'Content-Type': 'application/json'}, json={"longitude": 01.0, "latitude": -0.21})
     assert response.status_code == 200
